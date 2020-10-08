@@ -12,11 +12,12 @@ namespace PP.CodeTest.Tests
         private BusinessRuleEngine ruleEngine = new BusinessRuleEngine("Order Management", new List<BusinessFunctionRule>() {
                     new BusinessFunctionRule("Physical_Item_Generate_Pack_Slip",x => x.DeliveryType == DeliveryTypeEnum.Physical, 2),
                     new BusinessFunctionRule("Physical_Or_Book_AgentCommission",x => x.DeliveryType == DeliveryTypeEnum.Physical ||  QueryHelpers.ProductTypeEqual(x,ProductTypeEnum.Book), 2),
-                    new BusinessFunctionRule("Book_DuplicatePackSlip_Royalty",x => x.ProductType == ProductTypeEnum.Book, 2),
+                    new BusinessFunctionRule("Book_DuplicatePackSlip_Royalty",x => QueryHelpers.ProductTypeEqual(x, ProductTypeEnum.Book), 2),
                     new BusinessFunctionRule("Membership_Activate",x => QueryHelpers.ProductTypeEqual(x,ProductTypeEnum.ActivateMembership), 2),
                     new BusinessFunctionRule("Membership_Upgrade",x => QueryHelpers.ProductTypeEqual(x,ProductTypeEnum.UpgradeMembership), 2),
                     new BusinessFunctionRule("Membership_Communication",x => QueryHelpers.ProductTypeIn(x,new[]{ProductTypeEnum.ActivateMembership,ProductTypeEnum.UpgradeMembership })  , 3),
                     new BusinessFunctionRule("Video_LearningToSki_AddFirstAid",x => QueryHelpers.WhereKey(x, "Learning To Ski") &  QueryHelpers.ProductTypeEqual(x,ProductTypeEnum.Video), 1),
+                    new BusinessFunctionRule("Music_Pay_Royalty",x => QueryHelpers.ProductTypeEqual( x, ProductTypeEnum.Music), 2),
         });
 
         /// <summary>
@@ -226,6 +227,65 @@ namespace PP.CodeTest.Tests
                 log.Details.Where(x => x.Value == "Membership_Upgrade").FirstOrDefault().Key);
 
             Assert.Equal(2, log.Details.Count);
+        }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = Yes
+        //     Type = Music
+        //
+        // Output : Rules to trigger
+        //     1. Generate packaging slip
+        //     2. Pay royalty to music company
+        //     3. Commission to agent
+        /// </summary>
+        [Fact]
+        public void Test_Physical_Music()
+        {
+            //Physical Product
+            //Product is book
+            var orderItem = new OrderItem()
+            {
+                ProductType = ProductTypeEnum.Music,
+                DeliveryType = DeliveryTypeEnum.Physical
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Physical_Item_Generate_Pack_Slip"));
+            Assert.True(log.Details.ContainsValue("Physical_Or_Book_AgentCommission"));
+            Assert.True(log.Details.ContainsValue("Music_Pay_Royalty"));
+
+            Assert.Equal(3, log.Details.Count);
+        }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = No
+        //     Type = Music
+        //
+        // Output : Rules to trigger
+        //
+        //     1. Pay royalty to music company
+        //
+        /// </summary>
+        [Fact]
+        public void Test_Online_Music()
+        {
+            //Physical Product
+            //Product is book
+            var orderItem = new OrderItem()
+            {
+                ProductType = ProductTypeEnum.Music,
+                DeliveryType = DeliveryTypeEnum.Online
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Music_Pay_Royalty"));
+            Assert.Single(log.Details);
         }
     }
 }

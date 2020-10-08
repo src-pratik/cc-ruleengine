@@ -18,7 +18,8 @@
         Furniture,
         ActivateMembership,
         UpgradeMembership,
-        Video
+        Video,
+        Music
     }
 
 }
