@@ -163,5 +163,69 @@ namespace PP.CodeTest.Tests
 
             Assert.Empty(log.Details);
         }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = No
+        //     Type = Membership Activation
+
+        // Output : Rules to trigger (The order should be in sequence)
+        //     1. Activate Membership
+        //     2. Email the client
+        /// </summary>
+
+        [Fact]
+        public void Test_Membership_New()
+        {
+            var orderItem = new OrderItem()
+            {
+                Key = "Learning To Ski",
+                ProductType = ProductTypeEnum.ActivateMembership,
+                DeliveryType = DeliveryTypeEnum.Online
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Membership_Activate"));
+            Assert.True(log.Details.ContainsValue("Membership_Communication"));
+
+            Assert.True(log.Details.Where(x => x.Value == "Membership_Communication").FirstOrDefault().Key >
+                log.Details.Where(x => x.Value == "Membership_Activate").FirstOrDefault().Key);
+
+            Assert.Equal(2, log.Details.Count);
+        }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = No
+        //     Type = Membership Upgrade
+
+        // Output : Rules to trigger (The order should be in sequence)
+        //     1. Activate Membership
+        //     2. Email the client
+        /// </summary>
+
+        [Fact]
+        public void Test_Membership_Upgrade()
+        {
+            var orderItem = new OrderItem()
+            {
+                Key = "Learning To Ski",
+                ProductType = ProductTypeEnum.UpgradeMembership,
+                DeliveryType = DeliveryTypeEnum.Online
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Membership_Upgrade"));
+            Assert.True(log.Details.ContainsValue("Membership_Communication"));
+
+            Assert.True(log.Details.Where(x => x.Value == "Membership_Communication").FirstOrDefault().Key >
+                log.Details.Where(x => x.Value == "Membership_Upgrade").FirstOrDefault().Key);
+
+            Assert.Equal(2, log.Details.Count);
+        }
     }
 }
