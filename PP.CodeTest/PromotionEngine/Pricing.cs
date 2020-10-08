@@ -5,6 +5,11 @@
     /// </summary>
     public static class Pricing
     {
+        /// <summary>
+        /// Provides price of an item.
+        /// </summary>
+        /// <param name="key">SKU ID</param>
+        /// <returns></returns>
         public static double Price(string key)
         {
             switch (key)
@@ -25,6 +30,11 @@
                     return 0;
             }
         }
+        /// <summary>
+        /// Provides the pricing when a promo code is applied
+        /// </summary>
+        /// <param name="promoKey">Promo Code</param>
+        /// <returns></returns>
         public static double PromoPrice(string promoKey)
         {
             switch (promoKey)
@@ -38,10 +48,12 @@
                 case "C & D":
                     return 30;
 
+                case "10 Of C`s":
+                    return (Pricing.Price("C") * 10) / 2;
+
                 default:
                     return 0;
             }
         }
     }
-
 }
