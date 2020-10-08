@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PP.CodeTest</name>
+    </assembly>
+    <members>
+        <member name="T:PP.CodeTest.BusinessFunctionRule">
+            <summary>
+            Business Rule which stores the business rules to be verified if they are satisfied
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.BusinessFunctionRule.Code">
+            <summary>
+            Code to identify the rule
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:PP.CodeTest.BusinessFunctionRule.Order" -->
+        <member name="P:PP.CodeTest.BusinessFunctionRule.WhereCondition">
+            <summary>
+            The where condition which defines the business rule to be verified.
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.BusinessRuleEngine">
+            <summary>
+            Engine to verify the business rules against an given input.
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.BusinessRuleEngine.Name">
+            <summary>
+            Name for the engine
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.BusinessRuleEngine.Rules">
+            <summary>
+            List of all rules that are defined
+            </summary>
+        </member>
+        <member name="M:PP.CodeTest.BusinessRuleEngine.Process(PP.CodeTest.OrderItem,System.Action{PP.CodeTest.BusinessFunctionRule,PP.CodeTest.OrderItem},System.Action)">
+            <summary>
+            Process the rules on the input
+            </summary>
+            <param name="item">Input on which the rules are to be applied</param>
+            <param name="onRuleHit">Invoke delegate when a particular rules is satisified</param>
+            <param name="onComplete">Invoke delegate when the engine has completely processed the input</param>
+        </member>
+        <member name="T:PP.CodeTest.DeliveryTypeEnum">
+            <summary>
+            Mode in which the product is bought
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.ProductTypeEnum">
+            <summary>
+            Type of product
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.EventLogTrace">
+            <summary>
+            This is just used to record the sequence of rule hits.
+            It will enable to test if the rules are properly executed in the sequence.
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.OrderItem">
+            <summary>
+            Sample order item to mock the input
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IBusinessRulesEngine">
+            <summary>
+            Interface for Business Engine
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IItem">
+            <summary>
+            Generic interface that defines for any input
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IPromotionEngine">
+            <summary>
+            Interface for Promotion Engine
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IPromotionRule">
+            <summary>
+            Interface for Promotion Rules
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IRule">
+            <summary>
+            Generic interface that defines a rule for the system
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.IRuleEngine">
+            <summary>
+            Generic interface for Rule Engine
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.PredicateBuilder">
+            <summary>
+            This is just a helper class to create dynamic expressions
+            NOTE: Time was not spent on writing this code it was already part of my personal code
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.CartItem">
+            <summary>
+            Sample cart item to mock the input
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.Pricing">
+            <summary>
+            Mock pricing store to get pricing information
+            </summary>
+        </member>
+        <member name="M:PP.CodeTest.Pricing.Price(System.String)">
+            <summary>
+            Provides price of an item.
+            </summary>
+            <param name="key">SKU ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:PP.CodeTest.Pricing.PromoPrice(System.String)">
+            <summary>
+            Provides the pricing when a promo code is applied
+            </summary>
+            <param name="promoKey">Promo Code</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:PP.CodeTest.PromoEngineEventLogTrace" -->
+        <member name="T:PP.CodeTest.PromotionRule">
+            <summary>
+            Promotion Rule which stores the business rules to be verified if they are satisfied
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.PromotionRule.Conditions">
+            <summary>
+            The list of business conditions.
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.PromotionRule.WhereCondition">
+            <summary>
+            The where condition by which the system can identify which items to look for
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.PromotionRule.CountCondition">
+            <summary>
+            The count of items that are required for apply the business condition
+            </summary>
+        </member>
+        <member name="P:PP.CodeTest.PromotionRule.Code">
+            <summary>
+            Friendly code for the rule
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:PP.CodeTest.PromotionRule.Order" -->
+        <member name="M:PP.CodeTest.PromotionRule.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.Int32},System.Int32)">
+            <summary>
+            Promotion rule which includes the conditions to verify 
+            </summary>
+            <param name="code">Friendly code for the rule</param>
+            <param name="conditions">Dictionary of rules which can used to define the rule for apply promo on any SKU</param>
+            <param name="order">Order in which the rule needs to be executed.</param>
+        </member>
+        <member name="T:PP.CodeTest.PromotionRuleEngine">
+            <summary>
+            Engine to verify the business rules against an given input.
+            </summary>
+        </member>
+        <member name="T:PP.CodeTest.QueryHelpers">
+            <summary>
+            Query conditions which are used repeatedly
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "F:PP.CodeTest.QueryHelpers.WhereKey" -->
+    </members>
+</doc>
