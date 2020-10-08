@@ -139,5 +139,29 @@ namespace PP.CodeTest.Tests
             Assert.True(log.Details.ContainsValue("Video_LearningToSki_AddFirstAid"));
             Assert.Single(log.Details);
         }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = No
+        //     Type = Video
+        // Output :
+        //     No rules should be triggered
+        /// </summary>
+
+        [Fact]
+        public void Test_NoRulesHit_Video_Online()
+        {
+            var orderItem = new OrderItem()
+            {
+                Key = "Lord Of Rings",
+                ProductType = ProductTypeEnum.Video,
+                DeliveryType = DeliveryTypeEnum.Online
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.Empty(log.Details);
+        }
     }
 }
