@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Xunit;
 
 namespace PP.CodeTest.Tests
@@ -21,14 +18,13 @@ namespace PP.CodeTest.Tests
                     new BusinessFunctionRule("Video_LearningToSki_AddFirstAid",x => QueryHelpers.WhereKey(x, "Learning To Ski") &  QueryHelpers.ProductTypeEqual(x,ProductTypeEnum.Video), 1),
         });
 
-
         /// <summary>
         // Case :
         //     Phyiscal = Yes
         //     Type = Book
-        //     
-        // Output : Rules to trigger 
-        //     1. Generate packaging slip 
+        //
+        // Output : Rules to trigger
+        //     1. Generate packaging slip
         //     2. Generate Royalty
         //     3. Commission to agent
         /// </summary>
@@ -51,6 +47,36 @@ namespace PP.CodeTest.Tests
             Assert.True(log.Details.ContainsValue("Book_DuplicatePackSlip_Royalty"));
 
             Assert.Equal(3, log.Details.Count);
+        }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = Yes
+        //     Type = Furniture
+        //
+        // Output : Rules to trigger
+        //
+        //     1. Generate packaging slip
+        //     2. Commission to agent
+        /// </summary>
+
+        [Fact]
+        public void Test_Physical_NonBook()
+        {
+            //Physical Product
+            var orderItem = new OrderItem()
+            {
+                ProductType = ProductTypeEnum.Furniture,
+                DeliveryType = DeliveryTypeEnum.Physical
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Physical_Item_Generate_Pack_Slip"));
+            Assert.True(log.Details.ContainsValue("Physical_Or_Book_AgentCommission"));
+
+            Assert.Equal(2, log.Details.Count);
         }
     }
 }
