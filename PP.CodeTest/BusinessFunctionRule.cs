@@ -27,6 +27,7 @@ namespace PP.CodeTest
         {
             WhereCondition = whereCondition;
             Code = code;
+            Order = order;
         }
     }
 }

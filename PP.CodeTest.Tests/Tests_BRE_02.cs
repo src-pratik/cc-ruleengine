@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace PP.CodeTest.Tests
@@ -77,6 +78,40 @@ namespace PP.CodeTest.Tests
             Assert.True(log.Details.ContainsValue("Physical_Or_Book_AgentCommission"));
 
             Assert.Equal(2, log.Details.Count);
+        }
+
+        /// <summary>
+        // Case :
+        //     Phyiscal = Yes
+        //     Type = Video
+        //     Name = Learning To Ski
+        // Output : Rules to trigger
+        //     1. Add Free Video to packaging slip (Should be before 2.)
+        //     2. Generate packaging slip
+        //     3. Commission to agent
+        /// </summary>
+
+        [Fact]
+        public void Test_Video_LearningToSki_Physical()
+        {
+            var orderItem = new OrderItem()
+            {
+                Key = "Learning To Ski",
+                ProductType = ProductTypeEnum.Video,
+                DeliveryType = DeliveryTypeEnum.Physical
+            };
+
+            var log = new EventLogTrace();
+            ruleEngine.Process(orderItem, log.HandleRuleHit);
+
+            Assert.True(log.Details.ContainsValue("Video_LearningToSki_AddFirstAid"));
+            Assert.True(log.Details.ContainsValue("Physical_Item_Generate_Pack_Slip"));
+            Assert.True(log.Details.ContainsValue("Physical_Or_Book_AgentCommission"));
+
+            Assert.True(log.Details.Where(x => x.Value == "Physical_Item_Generate_Pack_Slip").FirstOrDefault().Key >
+                log.Details.Where(x => x.Value == "Video_LearningToSki_AddFirstAid").FirstOrDefault().Key);
+
+            Assert.Equal(3, log.Details.Count);
         }
     }
 }
