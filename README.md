@@ -1,4 +1,4 @@
-# Rule Engine
+# Rule Engine [![Build Status](https://dev.azure.com/src-pratik/Public%20Code/_apis/build/status/src-pratik.cc-ruleengine?branchName=master)](https://dev.azure.com/src-pratik/Public%20Code/_build/latest?definitionId=8&branchName=master)
 ------------------
 
 ### Implementation
@@ -30,7 +30,7 @@ Test Case Implementations :
 - Tests_BRE_02 : Functional Test Cases
 
 ---
-## PP.CodeTest Code Documentation##
+## PP.CodeTest Code Documentation
 
 ## PP.CodeTest ##
 
