@@ -9,5 +9,4 @@
         public ProductTypeEnum ProductType { get; set; }
         public DeliveryTypeEnum DeliveryType { get; set; }
     }
-
 }
